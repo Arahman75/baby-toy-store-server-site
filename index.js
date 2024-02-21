@@ -6,10 +6,21 @@ require('dotenv').config();
 const port = process.env.PORT || 5000;
 
 
-
-//middleware
-app.use(cors());
+// middleware
+const corsConfig = {
+    origin: [
+        'http://localhost:5173',
+        'https://baby-toy-store-740bb.web.app',
+        'https://baby-toy-store-740bb.firebaseapp.com'
+    ],
+    credentials: true,
+    methods: ['GET', 'POST', 'PUT', 'DELETE']
+}
+app.use(cors(corsConfig))
+app.options("", cors(corsConfig));
+// app.use(cors());
 app.use(express.json());
+
 
 
 const uri = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@cluster0.ik9fyhp.mongodb.net/?retryWrites=true&w=majority`;
@@ -55,8 +66,8 @@ async function run() {
 
 
         // Send a ping to confirm a successful connection
-        await client.db("admin").command({ ping: 1 });
-        console.log("Pinged your deployment. You successfully connected to MongoDB!");
+        // await client.db("admin").command({ ping: 1 });
+        // console.log("Pinged your deployment. You successfully connected to MongoDB!");
     } finally {
         // Ensures that the client will close when you finish/error
         // await client.close();
